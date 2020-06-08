@@ -74,10 +74,10 @@ export default {
     })
   },
 
-  mounted(){
-    // this.$store.dispatch('getCategoryList')
-    this.getCategoryList()
-  },
+  // mounted(){
+  //   // this.$store.dispatch('getCategoryList')
+  //   this.getCategoryList()
+  // },
 
   methods:{
     ...mapActions(['getCategoryList']),
@@ -148,6 +148,13 @@ export default {
         name:'search',
         query
       }
+
+      const keyword = this.$route.params.keyword
+      if(keyword){
+        location.params={keyword}
+      }
+
+      // location.query = this.$route.query
 
       this.$router.push(location)
 

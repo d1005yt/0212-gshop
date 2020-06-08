@@ -57,12 +57,11 @@ export default {
       }
       if(keyword){
         location.params = {keyword}
-        location.query={keyword2:keyword.toUpperCase()}
+        // location.query={keyword2:keyword.toUpperCase()}
 
       }
-      this.$router.push(location).catch(()=>{
-        
-      })
+      location.query=this.$route.query
+      this.$router.push(location)
     }
   }
 }
