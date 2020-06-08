@@ -1,24 +1,24 @@
 import axios from 'axios'
-import Nprogress from 'nprogress'
+import NProgress from 'nprogress'
 // 配置通用的基础路径和超时
 const instance = axios.create({
-  baseURL:'/api',
-  timeout:15000
+  baseURL: '/api',
+  timeout: 15000
 })
 //请求拦截器
-axios.interceptors.request.use(config=>{
-  Nprogress.start()
+instance.interceptors.request.use(config => {
+  NProgress.start()
   return config
 })
 //响应拦截器
-axios.interceptors.response.use(
-  response=>{//成功回调
-    Nprogress.done()
+instance.interceptors.response.use(
+  response => { //成功回调
+    NProgress.done()
     return response.data
   },
-  error=>{//失败回调
-    Nprogress.done()
-    alert(error.message||'未知错误')
+  error => { //失败回调
+    NProgress.done()
+    alert(error.message || '未知错误')
     return Promise.reject(error)
   }
 )
