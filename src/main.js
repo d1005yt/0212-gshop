@@ -4,8 +4,11 @@ import router from './router'
 import TypeNav from './components/TypeNav'
 import store from './store'
 import '@/mock/mockServer'
+import 'swiper/css/swiper.min.css'
+import Carousel from './components/Carousel'
 
 Vue.component('TypeNav', TypeNav)
+Vue.component('Carousel', Carousel)
 
 new Vue({
   render: h => h(App),

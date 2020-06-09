@@ -2,7 +2,8 @@
 import {
   reqCategoryList,
   reqBanners,
-  reqFloors
+  reqFloors,
+  reqTodays
 } from '../../api'
 
 export default {
@@ -10,6 +11,7 @@ export default {
     categoryList: [], //分类列表
     banners: [], //广告轮播列表
     floors: [], //楼层列表数据
+    todays: [], //今日推荐
   },
   //当前子模块的
 
@@ -27,6 +29,10 @@ export default {
     //接收保存楼层列表数据
     RECEIVE_BANNERS(state, banners) {
       state.banners = banners
+    },
+
+    RECEIVE_TODAYS(state, todays) {
+      state.todays = todays
     }
   },
 
@@ -62,10 +68,20 @@ export default {
       const result = await reqFloors()
       if (result.code === 200) {
         const floors = result.data
-        console.log(floors)
         commit('RECEIVE_FLOORS', floors)
       }
-    }
+    },
+
+    //异步请求获取今日推荐
+    async getTodays({
+      commit
+    }) {
+      const result = await reqTodays()
+      if (result.code === 200) {
+        const todays = result.data
+        commit('RECEIVE_TODAYS', todays)
+      }
+    },
 
   },
 

@@ -15,3 +15,8 @@ export const reqCategoryList = () => ajax('/product/getBaseCategoryList')
 //访问moke接口的请求函数
 export const reqBanners = () => mockAjax('/banners')
 export const reqFloors = () => mockAjax('/floors')
+export const reqTodays = () => mockAjax('/todays')
+
+
+
+export const reqProductList = (options) => ajax.post('/list', options)
