@@ -156,7 +156,14 @@ export default {
 
       // location.query = this.$route.query
 
+       //如果当前没有在search，用push，否则用replace
+      // if(this.$route.name!=='search'){
+      //通过路径判断
+      if(this.$route.path.indexOf('/search')!==0){
       this.$router.push(location)
+      }else{
+      this.$router.replace(location)
+      }
 
       //自动隐藏列表
       this.hideSubCategorys()
