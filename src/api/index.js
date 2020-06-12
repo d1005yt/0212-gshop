@@ -20,3 +20,4 @@ export const reqTodays = () => mockAjax('/todays')
 
 
 export const reqProductList = (options) => ajax.post('/list', options)
+export const reqDetailInfo = (skuId) => ajax.get(`/item/${skuId}`)

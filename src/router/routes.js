@@ -2,7 +2,8 @@ import Home from '../pages/Home'
 import Search from '../pages/Search'
 import Register from '../pages/Register'
 import Login from '@/pages/Login'
-import router from '.'
+// import router from '.'
+import Detail from '@/pages/Detail'
 
 export default [{
     path: '/',
@@ -31,4 +32,9 @@ export default [{
       isHideFooter: true
     }
   },
+
+  {
+    path: '/detail/:id',
+    component: Detail
+  }
 ]

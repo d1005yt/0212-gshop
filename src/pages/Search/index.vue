@@ -1,5 +1,5 @@
 <template>
-  <div>
+ <div>
     <TypeNav />
     <div class="main">
       <div class="py-container">
@@ -11,10 +11,19 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x" v-if="options.categoryName">{{options.categoryName}}<i @click="removeCategory">×</i></li>
-            <li class="with-x" v-if="options.keyword">{{options.keyword}}<i @click="removeKeyword">×</i></li>
-            <li class="with-x" v-if="options.trademark">{{options.trademark}}<i @click="removeTrademark">×</i></li>
-            <li class="with-x" v-for="(prop,index) in options.props" :key="prop">{{prop}}<i @click="removeProp(index)">×</i></li>
+            <li class="with-x" v-if="options.categoryName">
+              {{options.categoryName}}<i @click="removeCategory">×</i>
+            </li>
+            <li class="with-x" v-if="options.keyword">
+              {{options.keyword}}<i @click="removeKeyword">×</i>
+            </li>
+            <li class="with-x" v-if="options.trademark">
+              {{options.trademark}}<i @click="removeTrademark">×</i>
+            </li>
+
+            <li class="with-x" v-for="(prop, index) in options.props" :key="prop">
+              {{prop}}<i @click="removeProp(index)">×</i>
+            </li>
           </ul>
         </div>
 
@@ -27,11 +36,14 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li :class="{active:isActive('1')}" @click="setOrder('1')">
-                  <a href="#">综合
-                    <i class="iconfont" v-if="isActive('1')" :class="iconClass"></i></a>
+                <li :class="{active: isActive('1')}" @click="setOrder('1')">
+                  <a href="javascript:">
+                    综合
+                    <i class="iconfont" v-if="isActive('1')"
+                      :class="iconClass"></i>
+                  </a>
                 </li>
-                <li >
+                <li>
                   <a href="#">销量</a>
                 </li>
                 <li>
@@ -40,20 +52,28 @@
                 <li>
                   <a href="#">评价</a>
                 </li>
-                <li :class="{active:isActive('2')}" @click="setOrder('2')">
-                  <a href="#">价格
-                    <i class="iconfont" v-if="isActive('2')" :class="iconClass"></i>
+                <li :class="{active: isActive('2')}" @click="setOrder('2')">
+                  <a href="javascript:">
+                    价格
+                    <i class="iconfont" v-if="isActive('2')"
+                      :class="iconClass"></i>
                   </a>
                 </li>
+               <!--  <li>
+                  <a href="#">价格⬇</a>
+                </li> -->
               </ul>
             </div>
           </div>
+
           <div class="goods-list">
             <ul class="yui3-g">
-              <li class="yui3-u-1-5" v-for="item in productList.goodsList" :key="item.id">
+              <li class="yui3-u-1-5" v-for=" item in productList.goodsList" :key="item.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="javascript:"><img :src="item.defaultImg" /></a>
+                    <router-link :to="`/detail/${item.id}`">
+                      <img :src="item.defaultImg" />
+                    </router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -62,7 +82,7 @@
                     </strong>
                   </div>
                   <div class="attr">
-                    <a href="javascript:">{{item.title}}</a>
+                    <router-link :to="`/search/${item.id}`">{{item.title}}</router-link>
                   </div>
                   <div class="commit">
                     <i class="command">已有<span>2000</span>人评价</i>
@@ -75,7 +95,14 @@
               </li>
             </ul>
           </div>
-          <Pagination :currentPage="options.pageNo" :pageSize="options.pageSize" :total="productList.total" :showPageNo="5" @currentChange="getProductList"></Pagination>
+
+          <Pagination 
+            :currentPage="options.pageNo"
+            :pageSize="options.pageSize"
+            :total="productList.total"
+            :showPageNo="5"
+            @currentChange="getProductList"
+          />
         </div>
       </div>
     </div>
