@@ -76,12 +76,12 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="skuNum">
+                <a href="javascript:" class="plus" @click="skuNum=skuNum*1+1">+</a>
+                <a href="javascript:" class="mins" @click="skuNum=skuNum>1?skuNum-1:skuNum">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="addToCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -341,7 +341,8 @@ export default {
 
   data(){
     return{
-      currentIndex:0
+      currentIndex:0,//当前图片下标
+      skuNum:1
     }
   },
 
@@ -369,7 +370,47 @@ export default {
       //将指定的选中
       value.isChecked='1'
       console.log(value.isChecked)
-    }
+    },
+
+    async addToCart(){
+      const skuNum =this.skuNum
+      const skuId=this.$route.params.id
+      //方式一：使用回调函数数据
+      // this.$store.dispatch('addToCart',{skuId,skuNum,callback:this.callback})
+
+      //方式二：利用dispatch的返回值是promise
+      // const promise=this.$store.dispatch('addToCart2',{skuNum,skuId})
+      // promise.then(()=>{
+      //   this.$router.push('/addcartsuccess')
+      // }).catch(error=>{
+      //   alert(error.message)
+      // })
+
+      // try{
+      //   await this.$store.dispatch('addToCart2',{skuNum,skuId})
+      //   this.$router.push('/addcartsuccess')
+      // }catch(error){
+      //   alert(error.message)
+      // }
+
+      const errorMsg = await this.$store.dispatch('addToCart3',{skuNum,skuId})
+        if (errorMsg) {
+          alert(errorMsg)
+        }else{
+          window.sessionStorage.setItem('SKU_INFO_KEY',JSON.stringify(this.skuInfo))
+          this.$router.push({path:'/addcartsuccess',query:{skuNum}})
+        }
+    },
+
+    //异步action
+    callback(errorMsg){
+      if(errorMsg){
+        alert(errorMsg)
+      }else{
+        this.$router.push('/addcartsuccess')
+      }
+    },
+
   },
 
   components:{
