@@ -76,7 +76,7 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" v-model="skuNum">
+                <input autocomplete="off" class="itxt" v-model="skuNum" @change="Type(skuNum)">
                 <a href="javascript:" class="plus" @click="skuNum=skuNum*1+1">+</a>
                 <a href="javascript:" class="mins" @click="skuNum=skuNum>1?skuNum-1:skuNum">-</a>
               </div>
@@ -346,6 +346,16 @@ export default {
     }
   },
 
+  // watch: {
+  //   // 如果 `question` 发生改变，这个函数就会运行
+  //   skuNum: function (skuNum) {
+  //     typeof(skuNum)==='number'?skuNum:1
+  //     // console.log(typeof(skuNum)==='number')
+  //     console.log(skuNum);
+      
+  //   }
+  // },
+
   computed:{
     ...mapState({
       detailInfo:state => state.detail.detailInfo
@@ -358,6 +368,10 @@ export default {
   },
 
   methods:{
+    Type(skuNum){
+      this.skuNum=parseInt(skuNum)>0?skuNum:1
+    },
+
     handleCurrentChange(index){
       this.currentIndex=index
     },
