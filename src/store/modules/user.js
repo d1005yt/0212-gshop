@@ -1,7 +1,12 @@
 /* 管理用户的 */
+import {
+  getUserTempId
+} from '@/utils'
+
 export default {
   state: {
-    userInfo: {}
+    userInfo: {},
+    userTempId: getUserTempId()
   },
   mutations: {},
   actions: {},

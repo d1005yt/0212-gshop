@@ -1,5 +1,6 @@
 import axios from 'axios'
 import NProgress from 'nprogress'
+import store from '@/store'
 // 配置通用的基础路径和超时
 const instance = axios.create({
   baseURL: '/api',
@@ -8,6 +9,7 @@ const instance = axios.create({
 //请求拦截器
 instance.interceptors.request.use(config => {
   NProgress.start()
+  config.headers['userTempId'] = store.state.user.userTempId
   return config
 })
 //响应拦截器
