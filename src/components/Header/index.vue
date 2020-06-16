@@ -5,7 +5,11 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="userInfo.token">
+            <span>{{userInfo.name}}</span>
+            <a href="javascript:" @click="logout">退出</a>
+          </p>
+          <p v-else>
             <span>请</span>
             <router-link to="/login">登录</router-link>
             <router-link to="/register" class="register">免费注册</router-link>
@@ -50,13 +54,29 @@ export default {
     }
   },
 
+  computed:{
+    userInfo(){
+      return this.$store.state.user.userInfo
+    }
+  },
+
 mounted(){
+
   this.$bus.$on('removeKeyword',()=>{
     this.keyword=''
   })
 },
 
   methods:{
+logout(){
+  if(window.confirm('确定要退出吗？')){
+    this.$store.dispatch('logout').then(()=>{
+      this.$router.push('/login')
+    }).catch(error=>{
+      alert(error.message)
+    })
+  }
+},
     search(){
       const {keyword}=this
       const location = {
