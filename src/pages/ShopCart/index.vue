@@ -25,7 +25,7 @@
           </li>
           <li class="cart-list-con5">
             <a href="javascript:void(0)" class="mins" @click="changeItemCount(item,-1)">-</a>
-            <input autocomplete="off" type="text" class="itxt" :value="item.skuNum" @change="changeItemCount(item,$event.target.value-item.skuNum,$event)">
+            <input autocomplete="off" type="text" class="itxt" :value="item.skuNum" @change="changeItemCount(item,$event.target.value-item.skuNum,$event)" @keyup="validInput">
             <a href="javascript:void(0)" class="plus" @click="changeItemCount(item,1)">+</a>
           </li>
           <li class="cart-list-con6">
@@ -57,7 +57,7 @@
           <i class="summoney">{{totalPrice}}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+           <router-link to="/trade" class="sum-btn" >结算</router-link>
         </div>
       </div>
     </div>
@@ -99,6 +99,11 @@
     },
 
      methods:{
+       validInput(event){
+         const input=event.target
+         input.value=input.value.replace(/^0+|\D+0*/g,'')
+       },
+
        async deleteAllChecked(){
          if (window.confirm(`确定删除吗`)) {
          try{
@@ -138,9 +143,8 @@
       async changeItemCount(item,numChange,event){
         //最终数量大于0才发请求，否则变为原来的值
         const num=item.skuNum+numChange
-        const numC=Math.floor(num)
         //this.skuNum=parseInt(skuNum)>0?skuNum:1
-        if(num>0&&num===numC){
+        if(num>0){
           const skuId = item.skuId
           const skuNum = numChange
           try{

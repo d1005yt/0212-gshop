@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from "vue-router"
 import routes from "./routes"
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -35,7 +36,7 @@ VueRouter.prototype.replace = function (location, onComplete, onAbort) {
 
 
 
-export default new VueRouter({
+const router = new VueRouter({
   mode: 'history',
   routes,
 
@@ -47,3 +48,30 @@ export default new VueRouter({
     }
   }
 })
+
+//访问这些路由路径必须检查其已经登录
+const checkPaths = ['/trade', '/pay', '/center']
+
+//注册全局前置守卫
+router.beforeEach((to, from, next) => { //监视的回调
+  //得到目标路径
+  const targetPath = to.path
+  //判断如果是需要登陆检查的
+  //  if( checkPaths.indexOf(targetPath)>=0)   不对，请求路径可能是/center/myorder
+  const needCheck = !!checkPaths.find(path => targetPath.indexOf(path) === 0)
+  if (needCheck) {
+    //已经登陆，放行
+    const token = store.state.user.userInfo.token
+    if (token) {
+      next()
+    } else {
+      //没有登陆，强制跳转到登陆界面
+      next('/login?redirect=' + targetPath)
+    }
+  } else {
+    //如果是不需要检查的，直接放行
+    next()
+  }
+})
+
+export default router

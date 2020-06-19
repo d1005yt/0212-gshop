@@ -8,32 +8,40 @@
       </h3>
       <div class="content">
         <label>手机号:</label>
-        <input type="text" placeholder="请输入你的手机号">
+        <input type="text" placeholder="请输入你的手机号" v-model="mobile" 
+        v-validate="{required: true,regex: /^1\d{10}$/}" name="phone" :class="{invalid:errors.has('phone')}">
+        <span class="error-msg">{{errors.first('phone')}}</span>
         <!-- <span class="error-msg">错误提示信息</span> -->
       </div>
       <div class="content">
         <label>验证码:</label>
-        <input type="text" placeholder="请输入验证码">
-        <img ref="code" src="http://182.92.128.115/api/user/passport/code" alt="code">
-        <!-- <span class="error-msg">错误提示信息</span> -->
+        <input type="text" placeholder="请输入验证码" v-model="code"
+        name="code" v-validate="{required:true,regex:/^\d{4}$/}"  :class="{invalid:errors.has('code')}">
+        <img ref="code" src="/api/user/passport/code" alt="code" @click="updateCode">
+        <span class="error-msg">{{errors.first('code')}}</span>
       </div>
       <div class="content">
         <label>登录密码:</label>
-        <input type="text" placeholder="请输入你的登录密码">
+        <input type="text" placeholder="请输入你的登录密码" v-model="password"
+        name="password" v-validate="{required:true,min:6,max:10}"  :class="{invalid:errors.has('password')}">
         <!-- <span class="error-msg">错误提示信息</span> -->
+        <span class="error-msg">{{errors.first('password')}}</span>
       </div>
       <div class="content">
         <label>确认密码:</label>
-        <input type="text" placeholder="请输入确认密码">
+        <input type="text" placeholder="请输入确认密码" v-model="password2"
+        name="确认密码" v-validate="{required:true,is:password}"  :class="{invalid:errors.has('确认密码')}">
         <!-- <span class="error-msg">错误提示信息</span> -->
+        <span class="error-msg">{{errors.first('确认密码')}}</span>
       </div>
       <div class="controls">
-        <input name="m1" type="checkbox">
+        <input type="checkbox" v-model="isAgree" 
+        name="协议" v-validate="{agree:true}">
         <span>同意协议并注册《尚品汇用户协议》</span>
-        <!-- <span class="error-msg">错误提示信息</span> -->
+        <span class="error-msg">{{errors.first('协议')}}</span>
       </div>
       <div class="btn">
-        <button>完成注册</button>
+        <button @click="register">完成注册</button>
       </div>
     </div>
 
@@ -59,6 +67,42 @@
 <script>
 export default {
   name: 'Register',
+  
+  data(){
+    return {
+      mobile:'',
+      password:'',
+      password2:'',
+      code:'',
+      isAgree:false
+    }
+  },
+
+  methods:{
+    updateCode(){
+      this.$refs.code.src='/api/user/passport/code?time='+Date.now()
+    },
+
+    async register(){
+      //前台表单校验
+      const success =await this.$validator.validateAll()
+      if(success){
+          const {mobile,password,code} =this
+          try{
+            await this.$store.dispatch('register',{mobile,password,code})
+            this.$router.replace('/login')
+          }catch(error){
+            this.updateCode()
+            this.code=''
+            alert(error.message)
+          }
+        }else{
+          console.log('校验没通过')
+        }
+      }
+      
+  }
+
 }
 </script>
 
@@ -113,6 +157,9 @@ export default {
           margin-left: 5px;
           outline: none;
           border: 1px solid #999;
+          &.invalid{
+            border:solid 1px #f00;
+          }
         }
 
         img {

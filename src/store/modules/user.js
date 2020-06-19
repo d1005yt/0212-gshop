@@ -8,13 +8,13 @@ import {
 import {
   reqRegister,
   reqLogin,
-  reqLogout
+  reqLogout,
 } from '@/api'
 
 export default {
   state: {
     userInfo: getUserInfo(),
-    userTempId: getUserTempId()
+    userTempId: getUserTempId(),
   },
 
   mutations: {
@@ -24,7 +24,7 @@ export default {
     ) {
       state.userInfo = userInfo
     },
-    
+
     RESET_USER_INFO(state) {
       state.userInfo = {}
     }
